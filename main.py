@@ -25,9 +25,12 @@ def index():
 def predict():
     rsp = request.form.get("temperature")
     if rsp != "":
-        prediction = model.predict([[float(rsp)]]) # ! if valu error occurs might use pip install -U scikit-learn
-        output = round(prediction[0],2)
-        return render_template("/index.html",prediction_text=f"Total Revenue Generated is: {output}Tk/-")
+        try:
+            prediction = model.predict([[float(rsp)]]) # ! if valu error occurs might use pip install -U scikit-learn
+            output = round(prediction[0],2)
+            return render_template("/index.html",prediction_text=f"Total Revenue Generated is: {output}Tk/-")
+        except:
+            return render_template("/index.html",prediction_text=f"Please input number not characters.")
     else:
         return render_template("/index.html",prediction_text=f"The input must not be blank")
 
