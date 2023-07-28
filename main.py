@@ -23,9 +23,13 @@ def index():
 
 @app.route("/predict",methods=["GET","POST"])# by default GET Method only 
 def predict():
-    prediction = model.predict([[float(request.form.get("temperature"))]]) # ! if valu error occurs might use pip install -U scikit-learn
-    output = round(prediction[0],2)
-    return render_template("/index.html",prediction_text=f"Total Revenue Generated is: {output}Tk/-")
+    rsp = request.form.get("temperature")
+    if rsp != "":
+        prediction = model.predict([[float(rsp)]]) # ! if valu error occurs might use pip install -U scikit-learn
+        output = round(prediction[0],2)
+        return render_template("/index.html",prediction_text=f"Total Revenue Generated is: {output}Tk/-")
+    else:
+        return render_template("/index.html",prediction_text=f"The input must not be blank")
 
 
 # for final work
