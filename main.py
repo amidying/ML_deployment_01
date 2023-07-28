@@ -1,0 +1,35 @@
+import pickle
+from flask import Flask, render_template, request
+
+
+
+# OOPs --->
+# Class, Objects, Methods,Inheritance, Polymorphism, Abstruction, Encapsulation, Decorators
+# Generators, Dunder Methods, Abstract Methods, Static Method
+
+# 1. Create an object first
+
+app = Flask (__name__,template_folder='template')
+
+# loading the model
+
+model = pickle.load(open("model.pkl","rb"))
+
+
+# main directory
+@app.route("/") #------ whenever anyone hits this url go to the index function
+def index():
+    return render_template("/index.html")
+
+@app.route("/predict",methods=["GET","POST"])# by default GET Method only 
+def predict():
+    prediction = model.predict([[float(request.form.get("temperature"))]]) # ! if valu error occurs might use pip install -U scikit-learn
+    output = round(prediction[0],2)
+    return render_template("/index.html",prediction_text=f"Total Revenue Generated is: {output}Tk/-")
+
+
+# for final work
+if __name__=="__main__":
+    app.run(debug=True) # when you select debug = True if any error occurs it will print in the terminal
+    
+    
