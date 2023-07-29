@@ -26,6 +26,8 @@ def predict():
     rsp = request.form.get("temperature")
     if rsp != "":
         try:
+            if float(rsp) <0 : 
+                return render_template("/index.html",prediction_text=f"Please Enter positive temperature")
             prediction = model.predict([[float(rsp)]]) # ! if valu error occurs might use pip install -U scikit-learn
             output = round(prediction[0],2)
             return render_template("/index.html",prediction_text=f"Total Revenue Generated is: {output}Tk/-")
